@@ -9,44 +9,51 @@ const App = () => {
     {
       name: "Guil",
       score: 0, 
-      id: 1
+      id: 1,
     },
     {
       name: "Treasure",
       score: 0,
-      id: 2
+      id: 2,
     },
     {
       name: "Ashley",
       score: 0,
-      id: 3
+      id: 3,
     },
     {
       name: "James",
       score: 0,
-      id: 4
+      id: 4,
     }
   ]);
-
+  
+  const [highScore, setHighScore] = useState();
   const nextPlayerId = useRef(5);
 
+  useEffect(() => {
+    const scores = players.map( player => player.score);
+    setHighScore(Math.max(...scores));
+    }, [players]) 
+  
   const handleRemovePlayer = (id) => {
     setPlayers(prevPlayers => prevPlayers.filter(p => p.id !== id));
   }
-
+  
   const handleScoreChange = (id, delta) => {
     setPlayers(prevPlayers => prevPlayers.map( player => {
       if (player.id === id){
         return {
           name: player.name,
-          score: player.score  + delta,
+          score: player.score + delta,
           id: player.id
         }
       }
       return player;
+      
     }));
-    handleHighScore()
-  }
+
+  };
 
 
   const handleAddPlayer = (name) => {
@@ -61,31 +68,6 @@ const App = () => {
     ])
     nextPlayerId.current += 1
   };
-
-  const handleHighScore = () => {
-
-      console.log(`players: ` + players)
-      let maxScore = 0;
-      players.forEach( player => {
-        if (player.score > maxScore){
-          maxScore = player.score
-        }
-      })
-      console.log(`max score: ` + maxScore)
-  
-      let highestPlayers = []
-      players.forEach( player => {
-        if (player.score === maxScore){
-          highestPlayers.push(player.id)
-        }
-      })
-      console.log(`highestPlayers: ${highestPlayers}`)
-        
-
-
-
-  }
-
 
   return (
     <div className="scoreboard">
@@ -102,6 +84,7 @@ const App = () => {
           key={player.id.toString()}
           removePlayer={handleRemovePlayer}
           changeScore={handleScoreChange}
+          isHighScore={player.score === highScore && highScore !== 0}
         />
       )}
       <AddPlayerForm addPlayer={handleAddPlayer}/>
