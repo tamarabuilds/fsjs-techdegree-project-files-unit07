@@ -2,12 +2,17 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 
 import Counter from './Counter'
+import HighestScore from './HighestScore';
 
 const Player = ({name, score, id, removePlayer, changeScore}) => {
     return (
       <div className="player">
         <span className="player-name">
           <button className="remove-player" onClick={() => removePlayer(id)}>✖</button>
+          <HighestScore
+            highest={[1, 3]}
+            id={id}
+          />
           {name}
         </span>
   

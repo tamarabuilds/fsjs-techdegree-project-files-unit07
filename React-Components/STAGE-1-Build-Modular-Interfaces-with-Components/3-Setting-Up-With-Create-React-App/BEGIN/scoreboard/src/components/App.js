@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import Header from './Header';
 import Player from './Player';
@@ -45,6 +45,7 @@ const App = () => {
       }
       return player;
     }));
+    handleHighScore()
   }
 
 
@@ -60,6 +61,30 @@ const App = () => {
     ])
     nextPlayerId.current += 1
   };
+
+  const handleHighScore = () => {
+
+      console.log(`players: ` + players)
+      let maxScore = 0;
+      players.forEach( player => {
+        if (player.score > maxScore){
+          maxScore = player.score
+        }
+      })
+      console.log(`max score: ` + maxScore)
+  
+      let highestPlayers = []
+      players.forEach( player => {
+        if (player.score === maxScore){
+          highestPlayers.push(player.id)
+        }
+      })
+      console.log(`highestPlayers: ${highestPlayers}`)
+        
+
+
+
+  }
 
 
   return (
