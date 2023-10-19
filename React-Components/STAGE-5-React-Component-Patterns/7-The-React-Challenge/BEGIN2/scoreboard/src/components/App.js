@@ -1,48 +1,51 @@
 import React, { useState, useRef, useEffect } from "react";
 
 import Header from './Header';
-import Player from './Player';
+import Player from "./Player";
 import AddPlayerForm from "./AddPlayerForm";
 
 const App = () => {
   const [players, setPlayers] = useState([
     {
       name: "Guil",
-      score: 0, 
-      id: 1,
+      score: 0,
+      id: 1
     },
     {
       name: "Treasure",
       score: 0,
-      id: 2,
+      id: 2
     },
     {
       name: "Ashley",
       score: 0,
-      id: 3,
+      id: 3
     },
     {
       name: "James",
       score: 0,
-      id: 4,
+      id: 4
     }
   ]);
-  
-  const [highScore, setHighScore] = useState() ;
+
+  const [highScore, setHighScore] = useState();
   const nextPlayerId = useRef(5);
 
-  useEffect(() => {
-    const scores = players.map( player => player.score);
-    setHighScore(Math.max(...scores));
-    }, [players]) 
-  
+  useEffect( () => {
+    const scores = players.map( player => player.score );
+    // console.log(scores)
+    setHighScore(Math.max(...scores))     // IS THIS ALL I NEED? Don't need an updater function, it seems
+    console.log(`high score: ` + highScore)
+
+  }, [players]);
+
   const handleRemovePlayer = (id) => {
     setPlayers(prevPlayers => prevPlayers.filter(p => p.id !== id));
   }
-  
+
   const handleScoreChange = (id, delta) => {
-    setPlayers(prevPlayers => prevPlayers.map( player => {
-      if (player.id === id){
+    setPlayers(prevPlayers => prevPlayers.map(player => {
+      if (player.id === id) {
         return {
           name: player.name,
           score: player.score + delta,
@@ -50,24 +53,19 @@ const App = () => {
         }
       }
       return player;
-      
     }));
-
-  };
-
+  }
 
   const handleAddPlayer = (name) => {
     setPlayers(prevPlayers => [
-      ...prevPlayers, 
+      ...prevPlayers,
       {
         name,
         score: 0,
-        id: nextPlayerId.current
+        id: nextPlayerId.current++
       }
-
-    ])
-    nextPlayerId.current += 1
-  };
+    ]);
+  }
 
   return (
     <div className="scoreboard">
@@ -84,10 +82,10 @@ const App = () => {
           key={player.id.toString()}
           removePlayer={handleRemovePlayer}
           changeScore={handleScoreChange}
-          isHighScore={player.score === highScore && highScore !== 0}
+          isHighScore={player.score === highScore && highScore > 0}
         />
       )}
-      <AddPlayerForm addPlayer={handleAddPlayer}/>
+      <AddPlayerForm addPlayer={handleAddPlayer} />
     </div>
   );
 
