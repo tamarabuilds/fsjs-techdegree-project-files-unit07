@@ -6,14 +6,14 @@ const StarRating = () => {
     const [courseRating, setCourseRating] = useState(0)
 
     // Write a function that returns 5 Star components
-    const createStars = (courseRating) => {
+    const createStars = () => {
         const maxRating = 5;
         let starArray = [];
         // let rating = courseRating || maxRating
         for ( let i = 0; i < maxRating ; i++){
             starArray.push(
                 <Star 
-                    isSelected={ i < courseRating}
+                    isSelected={ courseRating > i}
                     setRating={() => handleSetRating(i + 1)}
                     key={i}
                 />)
@@ -23,7 +23,12 @@ const StarRating = () => {
 
     // Write an event handler that updates the courseRating state.
     const handleSetRating = (rating) => {
-        setCourseRating(rating);
+        if ( courseRating === rating ) {
+            setCourseRating(0)
+        } else {
+            setCourseRating(rating);
+
+        }
     };
     // Pass the function to a Star component via props
     
